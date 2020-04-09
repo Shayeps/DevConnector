@@ -140,7 +140,7 @@ router.get('/user/:user_id', async (req, res) => {
       user: req.params.user_id,
     }).populate('user', ['name', 'avatar']);
 
-    if (!profile) return res.status(400).json({ msg: 'Profile not found' });
+    if (!profile) return res.status(404).json({ msg: 'Profile not found' });
 
     res.json(profile);
   } catch (error) {
@@ -149,7 +149,7 @@ router.get('/user/:user_id', async (req, res) => {
     // Check if the ID is valid
     const valid = mongoose.Types.ObjectId.isValid(req.params.user_id);
     if (!valid) {
-      return res.status(400).json({ msg: 'Profile not found' });
+      return res.status(404).json({ msg: 'Profile not found' });
     }
 
     res.status(500).send('Server error');
