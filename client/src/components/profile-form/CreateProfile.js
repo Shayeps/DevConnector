@@ -1,10 +1,21 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
-import { createProfile } from '../../actions/profile'
+import { Link, withRouter, Redirect } from 'react-router-dom';
+import { createProfile, getCurrentProfile } from '../../actions/profile';
 
-const CreateProfile = ({ createProfile, history }) => {
+const CreateProfile = ({
+  createProfile,
+  getCurrentProfile,
+  profile: { profile, loading },
+  history,
+}) => {
+  useEffect(() => {
+    getCurrentProfile();
+    
+    // useEffect will keep runnning as long as loading is set to true
+  }, [loading]);
+
   const [formData, setFormData] = useState({
     company: '',
     website: '',
@@ -40,11 +51,16 @@ const CreateProfile = ({ createProfile, history }) => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const onSubmit = e => {
-      e.preventDefault();
-      createProfile(formData, history)
+  const onSubmit = (e) => {
+    e.preventDefault();
+    createProfile(formData, history);
+  };
 
-    }
+
+  if (!loading && profile !== null) {
+    return <Redirect to='/edit-profile' />;
+ }
+ 
   return (
     <Fragment>
       <h1 className='large text-primary'>Create Your Profile</h1>
@@ -53,7 +69,7 @@ const CreateProfile = ({ createProfile, history }) => {
         profile stand out
       </p>
       <small>* = required field</small>
-      <form className='form' onSubmit={e => onSubmit(e)}>
+      <form className='form' onSubmit={(e) => onSubmit(e)}>
         <div className='form-group'>
           <select name='status' value={status} onChange={(e) => onChange(e)}>
             <option value='0'>* Select Professional Status</option>
@@ -222,6 +238,12 @@ CreateProfile.propTypes = {
   createProfile: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = (state) => ({
+  profile: state.profile,
+});
+
 // In order to use history props, to pass it to the function we need to wrap
 // CreateProfile with the withRouter () function
-export default connect(null, { createProfile })(withRouter(CreateProfile));
+export default connect(mapStateToProps, { createProfile, getCurrentProfile })(
+  withRouter(CreateProfile)
+);
