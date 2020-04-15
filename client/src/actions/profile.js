@@ -71,7 +71,7 @@ export const createProfile = (formData, history, edit = false) => async (
 };
 
 // Add Experience
-export const addExperience = ({ formData, history }) => async (dispatch) => {
+export const addExperience = ( formData, history ) => async (dispatch) => {
   console.log('addExperience: ', formData);
   try {
     const config = {
@@ -116,7 +116,7 @@ export const addExperience = ({ formData, history }) => async (dispatch) => {
 };
 
 // Add Education
-export const AddEducation = ({ formData, history }) => async (dispatch) => {
+export const AddEducation = (formData, history) => async (dispatch) => {
   try {
     const config = {
       headers: {
