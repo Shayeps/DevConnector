@@ -14,7 +14,7 @@ const CreateProfile = ({
     getCurrentProfile();
     
     // useEffect will keep runnning as long as loading is set to true
-  }, [loading]);
+  }, [loading, getCurrentProfile]);
 
   const [formData, setFormData] = useState({
     company: '',

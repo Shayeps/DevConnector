@@ -8,6 +8,7 @@ const { check, validationResult } = require('express-validator');
 
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const Post = require('../../models/Post');
 
 //@route    GET api/profile/me
 //@desc     Get current user profile
@@ -71,7 +72,13 @@ router.post(
     const profileFields = {};
     profileFields.user = req.user.id;
     if (company) profileFields.company = company;
-    if (website) profileFields.website = website;
+    if (website) {
+      if (website.includes('http://') || website.includes('https://')) {
+        profileFields.website = website;
+      } else {
+        profileFields.website = `http://${website}`;
+      }
+    }
     if (location) profileFields.location = location;
     if (bio) profileFields.bio = bio;
     if (status) profileFields.status = status;
@@ -83,11 +90,42 @@ router.post(
 
     // Build social object
     profileFields.social = {};
-    if (youtube) profileFields.social.youtube = youtube;
-    if (twitter) profileFields.social.twitter = twitter;
-    if (facebook) profileFields.social.facebook = facebook;
-    if (linkedin) profileFields.social.linkedin = linkedin;
-    if (instagram) profileFields.social.instagram = instagram;
+    if (youtube) {
+      if (youtube.includes('http://') || youtube.includes('https://')) {
+        profileFields.social.youtube = youtube;
+      } else {
+        profileFields.social.youtube = `http://${youtube}`;
+      }
+    }
+
+    if (twitter) {
+      if (twitter.includes('http://') || twitter.includes('https://')) {
+        profileFields.social.twitter = twitter;
+      } else {
+        profileFields.social.twitter = `http://${twitter}`;
+      }
+    }
+    if (facebook) {
+      if (facebook.includes('http://') || facebook.includes('https://')) {
+        profileFields.social.facebook = facebook;
+      } else {
+        profileFields.social.facebook = `http://${facebook}`;
+      }
+    }
+    if (linkedin) {
+      if (linkedin.includes('http://') || linkedin.includes('https://')) {
+        profileFields.social.linkedin = linkedin;
+      } else {
+        profileFields.social.linkedin = `http://${linkedin}`;
+      }
+    }
+    if (instagram) {
+      if (instagram.includes('http://') || instagram.includes('https://')) {
+        profileFields.social.instagram = instagram;
+      } else {
+        profileFields.social.instagram = `http://${instagram}`;
+      }
+    }
 
     try {
       // Look for profile in DB
@@ -161,7 +199,8 @@ router.get('/user/:user_id', async (req, res) => {
 //@access   private
 router.delete('/', auth, async (req, res) => {
   try {
-    //@todo  Delete posts
+    // Delete posts - we look for every post the the user created and delete it
+    await Post.deleteMany({ user: req.user.id });
 
     // Delete profile - we look by user because thats the identifier
     await Profile.findOneAndRemove({ user: req.user.id });

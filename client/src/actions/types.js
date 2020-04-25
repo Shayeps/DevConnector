@@ -9,9 +9,13 @@ export const LOGIN_SUCCESS = 'login_success';
 export const LOGIN_FAIL = 'login_fail';
 export const LOGOUT = 'logout';
 export const GET_PROFILE = 'get_profile';
+export const GET_PROFILES = 'get_profiles';
+export const GET_REPOS = 'get_repos';
 export const CLEAR_PROFILE = 'clear_profile';
 export const UPDATE_PROFILE = 'update_profile';
 export const PROFILE_ERROR = 'profile_error';
+export const ACCOUNT_DELETED = 'account_deleted';
+export const RESET_PROFILE_LOADING = 'reset_profile_loading'
 
 
 

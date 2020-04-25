@@ -1,14 +1,14 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addExperience } from '../../actions/profile';
+import { addEducation } from '../../actions/profile';
 import { Link } from 'react-router-dom';
 
-const AddExperience = ({ addExperience, history }) => {
+const AddEducation = ({ addEducation, history }) => {
   const [formData, setformData] = useState({
-    company: '',
-    title: '',
-    location: '',
+    school: '',
+    degree: '',
+    fieldofstudy: '',
     from: '',
     to: '',
     current: false,
@@ -17,31 +17,39 @@ const AddExperience = ({ addExperience, history }) => {
 
   const [toDateDisabled, toggleDisabled] = useState(false);
 
-  const { company, title, location, from, to, current, description } = formData;
+  const {
+    school,
+    degree,
+    fieldofstudy,
+    from,
+    to,
+    current,
+    description,
+  } = formData;
 
   const onChange = (e) => {
     setformData({ ...formData, [e.target.name]: e.target.value });
   };
   return (
     <Fragment>
-      <h1 className='large text-primary'>Add An Experience</h1>
+      <h1 className='large text-primary'>Add Your Education</h1>
       <p className='lead'>
-        <i className='fas fa-code-branch'></i> Add any developer/programming
-        positions that you have had in the past
+        <i className='fas fa-code-branch'></i> Add any school or bootcamp that
+        you have attended
       </p>
       <small>* = required field</small>
       <form
         className='form'
         onSubmit={(e) => {
           e.preventDefault();
-          addExperience(formData, history);
+          addEducation(formData, history);
         }}>
         <div className='form-group'>
           <input
             type='text'
-            placeholder='* Job Title'
-            name='title'
-            value={title}
+            placeholder='* School'
+            name='school'
+            value={school}
             onChange={(e) => onChange(e)}
             required
           />
@@ -49,9 +57,9 @@ const AddExperience = ({ addExperience, history }) => {
         <div className='form-group'>
           <input
             type='text'
-            placeholder='* Company'
-            name='company'
-            value={company}
+            placeholder='* Degree Or Certificate'
+            name='degree'
+            value={degree}
             onChange={(e) => onChange(e)}
             required
           />
@@ -59,9 +67,9 @@ const AddExperience = ({ addExperience, history }) => {
         <div className='form-group'>
           <input
             type='text'
-            placeholder='Location'
-            name='location'
-            value={location}
+            placeholder='Field Of Study'
+            name='fieldofstudy'
+            value={fieldofstudy}
             onChange={(e) => onChange(e)}
           />
         </div>
@@ -86,7 +94,7 @@ const AddExperience = ({ addExperience, history }) => {
                 toggleDisabled(!toDateDisabled);
               }}
             />{' '}
-            Current Job
+            Current School
           </p>
         </div>
         <div className='form-group'>
@@ -104,7 +112,7 @@ const AddExperience = ({ addExperience, history }) => {
             name='description'
             cols='30'
             rows='5'
-            placeholder='Job Description'
+            placeholder='Program Description'
             value={description}
             onChange={(e) => onChange(e)}></textarea>
         </div>
@@ -117,8 +125,8 @@ const AddExperience = ({ addExperience, history }) => {
   );
 };
 
-AddExperience.propTypes = {
-  addExperience: PropTypes.func.isRequired,
+AddEducation.propTypes = {
+  addEducation: PropTypes.func.isRequired,
 };
 
-export default connect(null, { addExperience })(AddExperience);
+export default connect(null, { addEducation })(AddEducation);

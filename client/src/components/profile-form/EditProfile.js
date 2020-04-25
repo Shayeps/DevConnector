@@ -61,7 +61,8 @@ const EditProfile = ({
       instagram: loading || !profile.social ? '' : profile.social.instagram,
     });
     // useEffect will keep runnning as long as loading is set to true
-  }, [loading]);
+    // eslint-disable-next-line
+  }, [loading, getCurrentProfile]);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
